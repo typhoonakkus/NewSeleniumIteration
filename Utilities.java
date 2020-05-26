@@ -47,7 +47,7 @@ public static WebElement waitVisible(WebDriver driver, WebElement element){
     System.out.println("*****Find Element Visible*****"+element);    
 	}
 	catch (Exception e) {
-		System.out.println("*****Element Visible Deðil*****"+element);
+		System.out.println("*****Element Visible DeÃ°il*****"+element);
 	}
 	return element;
 	
@@ -61,7 +61,7 @@ public static void waitClickable(WebDriver driver, By by){
     System.out.println("*****Find Element Clickable*****"+by);    
 	}
 	catch (Exception e) {
-		System.out.println("*****Element Clickable Deðil*****"+by);
+		System.out.println("*****Element Clickable DeÃ°il*****"+by);
 	}
 	
 	}
@@ -106,5 +106,60 @@ public static boolean isClickable(WebElement el, WebDriver driver)
         return false;
     }
 }
+
+public static boolean waitPageLoad(WebDriver driver,int pageLoadTimeout) 
+{
+	try {
+	WebDriverWait wait = new WebDriverWait(driver, pageLoadTimeout); 
+	wait.until(
+	      webDriver -> ((JavascriptExecutor) webDriver).executeScript("return document.readyState").equals("complete"));
+	return true;
+	}catch(Exception e) {
+		return false;
+	}
+
+}
+	
+public static void waitForAjaxToFinish(WebDriver driver,int pageLoadTimeout) {
+
+    WebDriverWait wait = new WebDriverWait(driver, pageLoadTimeout);
+    wait.until(
+    		new ExpectedCondition<Boolean>() {
+
+        public Boolean apply(WebDriver driver) {
+            return ((JavascriptExecutor) driver).executeScript("return jQuery.active == 0").equals(true);
+        }
+
+    });
+}
+
+public static void mouseHoverAction(WebElement mainElement, String subElement,  WebDriver driver){
+	
+	 Actions action = new Actions(driver);
+    action.moveToElement(mainElement).perform();
+    if(subElement.equals("Accessories")){
+   	 action.moveToElement(driver.findElement(By.linkText("Accessories")));
+   	 Log.info("Accessories link is found under Product Category");
+    }
+    if(subElement.equals("iMacs")){
+   	 action.moveToElement(driver.findElement(By.linkText("iMacs")));
+   	 Log.info("iMacs link is found under Product Category");
+    }
+    if(subElement.equals("iPads")){
+   	 action.moveToElement(driver.findElement(By.linkText("iPads")));
+   	 Log.info("iPads link is found under Product Category");
+    }
+    if(subElement.equals("iPhones")){
+   	 action.moveToElement(driver.findElement(By.linkText("iPhones")));
+   	 Log.info("iPhones link is found under Product Category");
+    }
+    action.click();
+    action.perform();
+    Log.info("Click action is performed on the selected Product Type");
+}
+
+}
+
+
 
 }
